@@ -33,10 +33,7 @@ const addBookHandler = (request, h) => {
     updatedAt
   };
 
-  // console.log(name !== undefined);
   if (name !== undefined) {
-    console.log('readPage', readPage)
-    console.log('pageCount', pageCount)
 
     if (readPage < pageCount) {
         books.push(newBook);
@@ -78,12 +75,29 @@ const addBookHandler = (request, h) => {
     response.code(400);
     return response;
   }
-
-
-  
 };
 
+
+const getAllBooksHandler = (request, h) => {
+  const allbooks = books.map((book) => {
+    return {
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher
+    };
+  });
+
+  return { 
+    status: 'success',
+    data: {
+      books: allbooks
+    }
+  }
+
+}
+
 module.exports = {
-    addBookHandler
+    addBookHandler,
+    getAllBooksHandler
 }
 
