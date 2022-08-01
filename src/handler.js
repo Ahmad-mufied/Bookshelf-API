@@ -130,7 +130,7 @@ const editBookByIdHandler = (request, h) => {
   if (name == undefined) {
     const response = h.response({
       status: 'fail',
-      message: 'Gagal menambahkan buku. Mohon isi nama buku'
+      message: 'Gagal memperbarui buku. Mohon isi nama buku'
   });
   response.code(400);
   return response;
@@ -168,7 +168,7 @@ const editBookByIdHandler = (request, h) => {
 
   const response = h.response({
     status: 'success',
-    message: 'Buku berhashil diperbarui'
+    message: 'Buku berhasil diperbarui'
   });
   response.code(200);
   return response;
@@ -191,8 +191,8 @@ const deleteBookByIdHandler = (request, h) => {
   };
 
   const response = h.response({
-    status: 'failed',
-    message: 'Buku gagal dihapus. Id tidak detemukan'
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan'
   });
   response.code(404);
   return response
