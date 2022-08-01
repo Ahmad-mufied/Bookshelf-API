@@ -33,52 +33,47 @@ const addBookHandler = (request, h) => {
     updatedAt
   };
 
-  if (name !== undefined) {
-
-    if (readPage < pageCount) {
-        books.push(newBook);
-        const isSuccess = books.filter((book) => book.id === id).length > 0;
-      
-        if (isSuccess) {
-            const response = h.response({
-                status: 'success',
-                message: 'Buku berhasil ditambahkan',
-                data: {
-                    bookId: id,
-                }
-            });
-            response.code(201);
-            return response;
-        } else {
-          const response = h.response({
-            status: 'error',
-            message: 'Buku gagal ditambahkan'
-          });
-        
-          response.code(500);
-          return response;
-        }
-
-    } else {
-        const response = h.response({
-            status: 'fail',
-            message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'
-        });
-        response.code(200);
-        return response;
-    }
-  } else {
+  if (name == undefined) {
     const response = h.response({
-        status: 'fail',
-        message: 'Gagal menambahkan buku. Mohon isi nama buku'
-    });
-    response.code(400);
-    return response;
+      status: 'fail',
+      message: 'Gagal menambahkan buku. Mohon isi nama buku'
+  });
+  response.code(400);
+  return response;
+}
+
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount'
+  });
+  response.code(400);
+  return response;
   }
+
+  books.push(newBook);
+  const isSuccess = books.filter((book) => book.id === id).length > 0;
+
+  if (isSuccess) {
+      const response = h.response({
+          status: 'success',
+          message: 'Buku berhasil ditambahkan',
+          data: {
+              bookId: id,
+          }
+      });
+      response.code(201);
+      return response;
+  } 
+  const response = h.response({
+    status: 'error',
+    message: 'Buku gagal ditambahkan'
+  });
+  response.code(500);
+  return response;
 };
 
-
-const getAllBooksHandler = (request, h) => {
+const getAllBooksHandler = () => {
   const allbooks = books.map((book) => {
     return {
       id: book.id,
@@ -95,7 +90,7 @@ const getAllBooksHandler = (request, h) => {
   };
 };
 
-const getBookByHandler = (request, h) => {
+const getBookByIdHandler = (request, h) => {
   const { id } = request.params;
   const book = books.filter((b) => b.id === id)[0];
 
@@ -130,7 +125,7 @@ const editBookByIdHandler = (request, h) => {
     reading
   } = request.payload;
   const updatedAt = new Date().toISOString();
-  const index = books.findIndex((book) => book.id = id);
+  const index = books.findIndex((book) => book.id === id);
 
   if (name == undefined) {
     const response = h.response({
@@ -207,7 +202,7 @@ const deleteBookByIdHandler = (request, h) => {
 module.exports = {
     addBookHandler,
     getAllBooksHandler,
-    getBookByHandler,
+    getBookByIdHandler,
     editBookByIdHandler,
     deleteBookByIdHandler,
 }
